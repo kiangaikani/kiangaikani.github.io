@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>From Wet Lab to Computational Biology — Kian Gaikani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1a1a;
+      --ink-soft: #444;
+      --ink-muted: #888;
+      --cream: #f6f8fb;
+      --cream-dark: #eaf0f7;
+      --accent: #1e4d8c;
+      --accent-light: #e3ecf9;
+      --accent-mid: #2e6db4;
+      --rule: #cdd8e8;
+      --font-serif: 'DM Serif Display', Georgia, serif;
+      --font-sans: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(246,248,251,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-name { font-family: var(--font-serif); font-size: 1.1rem; color: var(--ink); text-decoration: none; }
+    .nav-back { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .hero {
+      background: var(--cream-dark);
+      border-bottom: 1px solid var(--rule);
+      padding: 5rem 3rem 4rem;
+      text-align: center;
+    }
+    .hero-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .hero h1 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.1; margin-bottom: 1.2rem; }
+    .hero h1 em { font-style: italic; color: var(--accent-mid); }
+    .hero-sub { font-size: 1.05rem; color: var(--ink-soft); max-width: 560px; margin: 0 auto 2rem; line-height: 1.75; }
+    .hero-byline { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted); }
+    .hero-byline a { color: var(--accent); text-decoration: none; }
+    .hero-byline a:hover { text-decoration: underline; }
+
+    .page-inner { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    .intro-block {
+      padding: 3.5rem 0 2rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .intro-block p { color: var(--ink-soft); font-size: 1rem; max-width: 680px; }
+    .intro-block p + p { margin-top: 1rem; }
+
+    .stage-section { padding: 2.5rem 0; border-bottom: 1px solid var(--rule); }
+    .stage-section:last-child { border-bottom: none; }
+
+    .stage-header { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .stage-badge {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      font-family: var(--font-serif); font-size: 1.15rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .stage-badge.zero { background: #6b4c2e; }
+    .stage-meta { flex: 1; }
+    .stage-meta .timing {
+      font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--accent-light); color: var(--accent);
+      border: 1px solid var(--rule);
+      padding: 2px 8px; border-radius: 2px; display: inline-block; margin-bottom: 0.4rem;
+    }
+    .stage-meta .timing.zero { background: #f4ede6; color: #6b4c2e; border-color: #d9b89a; }
+    .stage-meta h2 { font-family: var(--font-serif); font-size: 1.4rem; line-height: 1.2; }
+
+    .stage-body { padding-left: 60px; }
+    .stage-body p { color: var(--ink-soft); margin-bottom: 1.2rem; font-size: 0.96rem; }
+    .resources-list { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--rule); padding-top: 1rem; }
+    .res-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; }
+    .res-item::before {
+      content: '';
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent);
+      margin-top: 8px; flex-shrink: 0;
+    }
+    .res-item a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--rule); transition: color 0.2s, border-color 0.2s; }
+    .res-item a:hover { color: var(--accent-mid); border-color: var(--accent-mid); }
+    .res-note { font-size: 0.78rem; color: var(--ink-muted); margin-top: 2px; }
+
+    .tip-block {
+      margin: 3rem 0 4rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 1.8rem 2.2rem;
+      border-radius: 2px;
+    }
+    .tip-block .tip-label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.65; margin-bottom: 0.6rem; }
+    .tip-block p { font-size: 0.96rem; opacity: 0.92; line-height: 1.7; }
+
+    footer { padding: 2rem 3rem; display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--ink-muted); font-family: var(--font-mono); border-top: 1px solid var(--rule); }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0.9rem 1.2rem; }
+      .hero { padding: 3.5rem 1.5rem 3rem; }
+      .page-inner { padding: 0 1.2rem; }
+      .stage-body { padding-left: 0; margin-top: 1rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-name">Kian Gaikani</a>
+  <a href="index.html#resources" class="nav-back">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Main Page
+  </a>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Learning Roadmap</div>
+  <h1>From Wet Lab to<br><em>Computational Biology</em></h1>
+  <p class="hero-sub">A practical, stage-by-stage roadmap for experimental biologists who want to add computational skills.</p>
+  <div class="hero-byline">By <a href="index.html">Kian Gaikani, PhD</a> · Built from a postdoc's perspective</div>
+</div>
+
+<div class="page-inner">
+
+  <div class="intro-block">
+    <p>If you're a wet-lab biologist who wants to get more out of sequencing data, run your own analyses, or eventually move into a hybrid role, this roadmap is for you. It's not about becoming a computer scientist. It's about becoming a biologist who can think computationally and collaborate effectively with people who do.</p>
+    <p>The sequence matters. Each stage builds on the previous one, and the most common mistake is jumping ahead or switching resources mid-way. Pick one resource per stage, finish it, and move on.</p>
+  </div>
+
+  <!-- Step 0 -->
+  <div class="stage-section">
+    <div class="stage-header">
+      <div class="stage-badge zero">0</div>
+      <div class="stage-meta">
+        <span class="timing zero">Foundation · Run in parallel with Stage 1</span>
+        <h2>Math Literacy — Linear Algebra</h2>
+      </div>
+    </div>
+    <div class="stage-body">
+      <p>Most ML and bioinformatics tools involve linear algebra under the hood — matrix operations, dimensionality reduction (like PCA), clustering. You don't need to master it, but a visual intuition makes everything easier later. Watch a few videos alongside Stage 1 rather than treating this as a prerequisite.</p>
+      <div class="resources-list">
+        <div class="res-item">
+          <div>
+            <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank">3Blue1Brown — Essence of Linear Algebra ↗</a>
+            <div class="res-note">Free YouTube playlist. Visual, intuitive, no prerequisites. ~3 hours total.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 1 -->
+  <div class="stage-section">
+    <div class="stage-header">
+      <div class="stage-badge">1</div>
+      <div class="stage-meta">
+        <span class="timing">Months 1–3</span>
+        <h2>Python Fluency</h2>
+      </div>
+    </div>
+    <div class="stage-body">
+      <p>Python is the foundation for everything else on this roadmap — data manipulation, bioinformatics tools, and ML all run on it. The goal here is functional literacy, not mastery: loops, functions, file handling, basic data structures. Skip algorithms and software engineering theory for now.</p>
+      <p>CS50P (Harvard's Python course) is the best starting point. It's taught clearly, it's free, and it's specifically designed for Python — not a general programming course that happens to use Python.</p>
+      <div class="resources-list">
+        <div class="res-item">
+          <div>
+            <a href="https://www.youtube.com/playlist?list=PLhQjrBD2T3817j24-GogXmWqO5Q5vYy0V" target="_blank">CS50P — Harvard Introduction to Python (YouTube) ↗</a>
+            <div class="res-note">Free. Python-specific. Recommended first choice.</div>
+          </div>
+        </div>
+        <div class="res-item">
+          <div>
+            <a href="https://www.edx.org/learn/python/harvard-university-cs50-s-introduction-to-programming-with-python" target="_blank">CS50P — edX (auditable for free) ↗</a>
+            <div class="res-note">Same course, structured platform with problem sets.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 2 -->
+  <div class="stage-section">
+    <div class="stage-header">
+      <div class="stage-badge">2</div>
+      <div class="stage-meta">
+        <span class="timing">Months 3–5</span>
+        <h2>Data Python for Biology</h2>
+      </div>
+    </div>
+    <div class="stage-body">
+      <p>Now that Python basics are in place, learn the scientific stack: <strong>pandas</strong> for data frames, <strong>numpy</strong> for numerical operations, and <strong>matplotlib/seaborn</strong> for visualization. These are the tools you'll use daily in bioinformatics work.</p>
+      <p>The most important habit to develop here: apply everything to your own data immediately. Take a result you've previously plotted in GraphPad Prism or R, and reproduce it in Python. This "anchor learning" is the fastest way to make new skills stick.</p>
+      <div class="resources-list">
+        <div class="res-item">
+          <div>
+            <a href="https://www.kaggle.com/learn" target="_blank">Kaggle Learn — Free Micro-Courses ↗</a>
+            <div class="res-note">Browser-based, no setup required. Take the Python, Pandas, and Data Visualization modules. Each takes a few hours.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 3 -->
+  <div class="stage-section">
+    <div class="stage-header">
+      <div class="stage-badge">3</div>
+      <div class="stage-meta">
+        <span class="timing">Month 5+ · Ongoing alongside postdoc work</span>
+        <h2>Bioinformatics Python</h2>
+      </div>
+    </div>
+    <div class="stage-body">
+      <p>This is where biology and computation start to feel like the same thing. Two parallel tracks: building algorithmic intuition for sequence data, and getting hands-on with a real analysis tool.</p>
+      <p>For the algorithms side, Compeau &amp; Pevzner's textbook builds genuine understanding — not just tool usage. For the practical side, <strong>scanpy</strong> (single-cell analysis in Python) and <strong>DIYtranscriptomics</strong> (RNA-seq from the ground up) are both excellent entry points depending on your research context. Don't try to learn both at once — pick the one most relevant to your postdoc data.</p>
+      <div class="resources-list">
+        <div class="res-item">
+          <div>
+            <a href="https://www.bioinformaticsalgorithms.com" target="_blank">Bioinformatics Algorithms — Compeau &amp; Pevzner ↗</a>
+            <div class="res-note">Free interactive version online. 11 chapters. Builds deep intuition for sequence analysis, not just tool usage.</div>
+          </div>
+        </div>
+        <div class="res-item">
+          <div>
+            <a href="https://www.youtube.com/@bioinfalgorithms/playlists" target="_blank">Companion Video Lectures (YouTube) ↗</a>
+            <div class="res-note">Paired walkthroughs for each chapter of the textbook above.</div>
+          </div>
+        </div>
+        <div class="res-item">
+          <div>
+            <a href="https://diytranscriptomics.com/" target="_blank">DIYtranscriptomics ↗</a>
+            <div class="res-note">RNA-seq analysis from raw data to biological insight. Taught by Daniel Beiting (Penn). Excellent for anyone with transcriptomics data — R-based but very accessible.</div>
+          </div>
+        </div>
+        <div class="res-item">
+          <div>
+            <span style="color:var(--ink);font-weight:500;">scanpy</span> — apply to a public single-cell dataset from GEO
+            <div class="res-note">No separate course needed here — just load a relevant dataset and start exploring. The documentation is excellent.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 4 -->
+  <div class="stage-section">
+    <div class="stage-header">
+      <div class="stage-badge">4</div>
+      <div class="stage-meta">
+        <span class="timing">Month 6+</span>
+        <h2>ML for Biology</h2>
+      </div>
+    </div>
+    <div class="stage-body">
+      <p>By this point, you have enough Python and biological context to start engaging with machine learning in a meaningful way. The goal isn't to build ML models from scratch — it's to understand what these tools are doing well enough to use them critically in your research.</p>
+      <p>fast.ai's course is unusual in that it teaches applications first and theory second. That's exactly the right order for a working scientist. After completing it, you'll be able to read papers that use pre-trained biological models like ESM (protein sequences) or scGPT (single-cell data) and understand the methods well enough to evaluate them.</p>
+      <div class="resources-list">
+        <div class="res-item">
+          <div>
+            <a href="https://course.fast.ai/" target="_blank">fast.ai — Practical Deep Learning for Coders ↗</a>
+            <div class="res-note">Free. Application-first. Designed for practitioners, not engineers. One of the best-structured technical courses available.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-block">
+    <div class="tip-label">The most important principle</div>
+    <p>The "lost" feeling almost always comes from switching resources, not from the difficulty of the material itself. Pick one resource per stage, complete it, then move on. Progress compounds when it's linear.</p>
+  </div>
+
+</div>
+
+<footer>
+  <span>© 2026 Hamid Kian Gaikani</span>
+  <a href="index.html">← BACK TO MAIN PAGE</a>
+</footer>
+
+</body>
+</html>
