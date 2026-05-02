@@ -197,8 +197,8 @@
     .resources-panel.active { display: block; }
 
     .resources-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      display: flex;
+      flex-direction: column;
       gap: 1px;
     }
     .resource-card {
@@ -285,6 +285,24 @@
     #back-to-top.visible { opacity: 1; transform: translateY(0); }
     #back-to-top:hover { background: var(--accent-mid); }
     #back-to-top svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* Roadmap highlight section */
+    #roadmap-section { background: var(--accent); border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .roadmap-inner { max-width: 900px; margin: 0 auto; padding: 5rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .roadmap-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.6rem; }
+    .roadmap-inner h2 { font-family: var(--font-serif); font-size: clamp(1.8rem, 3vw, 2.4rem); color: #fff; line-height: 1.15; margin-bottom: 1.2rem; }
+    .roadmap-inner h2 em { font-style: italic; opacity: 0.8; }
+    .roadmap-inner > div > p { color: rgba(255,255,255,0.78); font-size: 0.96rem; line-height: 1.75; margin-bottom: 1rem; }
+    .roadmap-stages { display: flex; flex-direction: column; gap: 2px; }
+    .roadmap-stage { background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.14); padding: 0.85rem 1.2rem; display: flex; align-items: center; gap: 1rem; transition: background 0.2s; }
+    .roadmap-stage:hover { background: rgba(255,255,255,0.16); }
+    .rs-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.18); color: #fff; font-family: var(--font-serif); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .rs-num.zero { background: rgba(255,255,255,0.1); }
+    .rs-title { color: #fff; font-size: 0.86rem; font-weight: 500; }
+    .rs-sub { color: rgba(255,255,255,0.5); font-size: 0.72rem; font-family: var(--font-mono); }
+    .btn-white { display: inline-block; margin-top: 2rem; padding: 0.75rem 1.8rem; background: #fff; color: var(--accent); border: 1px solid #fff; border-radius: 2px; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; }
+    .btn-white:hover { background: var(--cream-dark); border-color: var(--cream-dark); }
+    @media (max-width: 768px) { .roadmap-inner { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 1.5rem; } }
 
   </style>
 </head>
@@ -653,115 +671,129 @@
     </div>
 
     <div class="resources-panel active" id="panel-courses">
-      <div class="resources-grid reveal">
-        <div class="resource-card">
-          <a href="https://www.classcentral.com/course/youtube-immunology-lecture-series-53065" target="_blank" rel="noopener">Immunology with Hematology</a>
-          <div class="resource-sub">Class Central</div>
-          <span class="resource-tag">Immunology</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@srsletten/courses" target="_blank" rel="noopener">Introduction to Immunology</a>
-          <div class="resource-sub">youtube.com/@srsletten</div>
-          <span class="resource-tag">Immunology</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/watch?v=HwuQJSJvE3I&list=PLBydV6aNr_HuPIFmjJWiZdWol0JCLWJaY" target="_blank" rel="noopener">Introduction to Biochemistry</a>
-          <div class="resource-sub">YouTube Playlist</div>
-          <span class="resource-tag">Biochemistry</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://hht.ttt.mybluehost.me" target="_blank" rel="noopener">NGS 101</a>
-          <div class="resource-sub">hht.ttt.mybluehost.me</div>
-          <span class="resource-tag">Genomics</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/playlist?list=PLoROMvodv4rOca_Ovz1DvdtWuz8BfSWL2" target="_blank" rel="noopener">Machine Learning for Beginners</a>
-          <div class="resource-sub">
-            · <a href="https://www.youtube.com/playlist?list=PLoROMvodv4rOca_Ovz1DvdtWuz8BfSWL2" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">CS221</a><br>
-            · <a href="https://www.youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">CS229</a>
+      <div class="posts-list reveal">
+        <a class="post-item" href="https://www.classcentral.com/course/youtube-immunology-lecture-series-53065" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>Immunology with Hematology</div>
+            <div class="post-meta">UC Irvine course by David A. Fruman, PhD</div>
           </div>
-          <span class="resource-tag">Machine Learning</span>
-        </div>
+        </a>
+        <a class="post-item" href="https://www.youtube.com/@srsletten/courses" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>Introduction to Immunology</div>
+            <div class="post-meta">University of North Dakota BIMD 328 by Sarah Sletten, PhD</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://www.youtube.com/watch?v=HwuQJSJvE3I&list=PLBydV6aNr_HuPIFmjJWiZdWol0JCLWJaY" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>Introduction to Biochemistry</div>
+            <div class="post-meta">CHEM349 by Elia Hefner, PhD</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://hht.ttt.mybluehost.me" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>NGS 101</div>
+            <div class="post-meta">The NGS Classroom for Bench Scientists. Start from absolute zero and build up from there.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://diytranscriptomics.com/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>DIYtranscriptomics</div>
+            <div class="post-meta">RNA-seq from raw data to biological insight, taught by Daniel Beiting, PhD (Penn). Designed for bench scientists with no prior coding experience.</div>
+          </div>
+        </a>
       </div>
     </div>
 
     <div class="resources-panel" id="panel-channels">
-      <div class="resources-grid reveal">
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@3blue1brown" target="_blank" rel="noopener">3Blue1Brown</a>
-          <div class="resource-sub">youtube.com/@3blue1brown</div>
-          <span class="resource-tag">Math & Visual Learning</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@iBiologyScienceStories" target="_blank" rel="noopener">iBiology Science Stories</a>
-          <div class="resource-sub">youtube.com/@iBiologyScienceStories</div>
-          <span class="resource-tag">Biology</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@statquest" target="_blank" rel="noopener">StatQuest</a>
-          <div class="resource-sub">youtube.com/@statquest</div>
-          <span class="resource-tag">Statistics & ML</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@NEJMgroup" target="_blank" rel="noopener">NEJM Group</a>
-          <div class="resource-sub">youtube.com/@NEJMgroup</div>
-          <span class="resource-tag">Medicine</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@biocenturyvideo487" target="_blank" rel="noopener">BioCentury</a>
-          <div class="resource-sub">youtube.com/@biocenturyvideo487</div>
-          <span class="resource-tag">Biotech & Industry</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@marinstatlectures/courses" target="_blank" rel="noopener">Marin Stats Lectures</a>
-          <div class="resource-sub">youtube.com/@marinstatlectures</div>
-          <span class="resource-tag">Statistics</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@Eigensteve" target="_blank" rel="noopener">Eigensteve</a>
-          <div class="resource-sub">youtube.com/@Eigensteve</div>
-          <span class="resource-tag">Applied Math & Engineering</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.youtube.com/@sentdex" target="_blank" rel="noopener">Sentdex</a>
-          <div class="resource-sub">youtube.com/@sentdex</div>
-          <span class="resource-tag">Python & ML</span>
-        </div>
+      <div class="posts-list reveal">
+        <a class="post-item" href="https://www.youtube.com/@3blue1brown" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>3Blue1Brown</div>
+            <div class="post-meta">Videos cover a variety of topics in math, or adjacent fields like physics and CS, all with an emphasis on visualizing the core ideas.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://www.youtube.com/@iBiologyScienceStories" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>iBiology Science Stories</div>
+            <div class="post-meta">Free biology talks by the world's leading scientists that show the process of science and the wonders of discovery.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://www.youtube.com/@statquest" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>StatQuest</div>
+            <div class="post-meta">Complex statistical and ML methodologies broken down into easy-to-understand pieces, with a focus on intuition over formulas.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://www.youtube.com/@NEJMgroup" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>NEJM Group</div>
+            <div class="post-meta">High-quality medical resources for research, learning, practice, and professional development from the New England Journal of Medicine.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://www.youtube.com/@marinstatlectures/courses" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>Marin Stats Lectures</div>
+            <div class="post-meta">R programming and statistics tutorials originally created for Master's and PhD students at UBC by Professor Mike Marin, now available to the public.</div>
+          </div>
+        </a>
       </div>
     </div>
 
     <div class="resources-panel" id="panel-podcasts">
-      <div class="resources-grid reveal">
-        <div class="resource-card">
-          <a href="https://www.hubermanlab.com/podcast" target="_blank" rel="noopener">Huberman Lab</a>
-          <div class="resource-sub">hubermanlab.com</div>
-          <span class="resource-tag">Neuroscience & Health</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://themoth.org/listen" target="_blank" rel="noopener">The Moth</a>
-          <div class="resource-sub">themoth.org</div>
-          <span class="resource-tag">Storytelling</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.nytimes.com/interactive/2026/podcasts/serial-productions.html" target="_blank" rel="noopener">Serial</a>
-          <div class="resource-sub">nytimes.com · Serial Productions</div>
-          <span class="resource-tag">Investigative</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.thisamericanlife.org" target="_blank" rel="noopener">This American Life</a>
-          <div class="resource-sub">thisamericanlife.org</div>
-          <span class="resource-tag">Storytelling</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://www.nature.com/nature/articles?type=nature-podcast" target="_blank" rel="noopener">Nature Podcast</a>
-          <div class="resource-sub">nature.com</div>
-          <span class="resource-tag">Science</span>
-        </div>
-        <div class="resource-card">
-          <a href="https://freakonomics.com/podcasts/" target="_blank" rel="noopener">Freakonomics Radio</a>
-          <div class="resource-sub">freakonomics.com</div>
-          <span class="resource-tag">Economics & Ideas</span>
-        </div>
+      <div class="posts-list reveal">
+        <a class="post-item" href="https://www.hubermanlab.com/podcast" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>Huberman Lab</div>
+            <div class="post-meta">Regularly ranked as the No. 1 health podcast in the world. Dr. Andrew Huberman discusses science and science-based tools for everyday life.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://themoth.org/listen" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>The Moth</div>
+            <div class="post-meta">Peabody Award-winning storytelling podcast featuring true, personal stories told live on stage — funny, poignant, and deeply human.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://www.thisamericanlife.org" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>This American Life</div>
+            <div class="post-meta">One of the most downloaded podcasts in the world — a weekly public radio show featuring journalism, memoir, and fiction around a single theme each episode.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://serialpodcast.org" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>Serial</div>
+            <div class="post-meta">The podcast that launched the true-crime genre. Each season unfolds a single story over multiple episodes, with the depth and care of long-form journalism.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://www.nature.com/nature/articles?type=nature-podcast" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>Nature Podcast</div>
+            <div class="post-meta">Weekly audio from the world's leading science journal — highlights from the latest Nature research, with interviews and in-depth discussions.</div>
+          </div>
+        </a>
+        <a class="post-item" href="https://freakonomics.com/podcasts/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <div>
+            <div>Freakonomics Radio</div>
+            <div class="post-meta">Stephen Dubner explores the hidden side of everything — using economics, psychology, and data to challenge conventional wisdom on topics from crime to education to happiness.</div>
+          </div>
+        </a>
       </div>
     </div>
 
@@ -797,6 +829,17 @@
         </a>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="roadmap-section" style="background:var(--accent);border-bottom:1px solid rgba(255,255,255,0.12);">
+  <div style="max-width:900px;margin:0 auto;padding:0.7rem 3rem;display:flex;align-items:center;justify-content:space-between;gap:3rem;flex-wrap:wrap;">
+    <div>
+      <div style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:0.5rem;">Guide</div>
+      <h2 style="font-family:var(--font-serif);font-size:1.5rem;color:#fff;line-height:1.2;margin-bottom:0.6rem;">From Wet Lab to <em style="font-style:italic;opacity:0.8;">Computational Biology</em></h2>
+      <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.65;max-width:480px;">A stage-by-stage roadmap for experimental biologists who want to add computational skills — without becoming a software engineer.</p>
+    </div>
+    <a href="roadmap.html" style="display:inline-block;padding:0.7rem 1.6rem;background:#fff;color:var(--accent);border-radius:2px;font-size:0.82rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='#eaf0f7'" onmouseout="this.style.background='#fff'">Open the Roadmap →</a>
   </div>
 </section>
 
